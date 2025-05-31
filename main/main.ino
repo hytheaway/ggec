@@ -121,6 +121,10 @@ static void timer_cb() {
   if (second > 59) {
     second = 0;
     minute++;
+    if (minute == 30) {
+      sync_time_date = false;
+      hourly_resync();
+    }
     if (minute > 59) {
       minute = 0;
       hour++;
