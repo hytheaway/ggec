@@ -130,9 +130,9 @@ static void timer_cb() {
       hour++;
       sync_time_date = false;
       hourly_resync();
-        if (hour > 12) {
-          hour = hour % 12;
-        }
+        // if (hour > 12) {
+        //   hour = hour % 12;
+        // }
       }
     }
   
