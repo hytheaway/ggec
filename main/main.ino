@@ -25,7 +25,9 @@ WiFiMulti wifiMulti;
 const char* ssid = "ssid";
 const char* password = "password";
 
-// replace with your own timezone from https://worldtimeapi.org/api/timezone
+// replace with your own timezone from IANA time zone.
+// you can make a test call on this website: https://timeapi.io/swagger/index.html
+// if the slash character doesn't work, replace it with %2F (e.g., "America%2FNew_York")
 const char* timezone = "America/New_York";
 
 String current_date;
@@ -49,7 +51,7 @@ void worldtime_sync() {
     HTTPClient http;
 
     USE_SERIAL.print("[HTTP] begin...\n");
-    http.begin(String("http://worldtimeapi.org/api/timezone/") + timezone);
+    http.begin(String("https://timeapi.io/api/v1/time/current/zone?timezone=") + timezone);
 
     USE_SERIAL.print("[HTTP] GET...\n");
     // start connection and send HTTP header
@@ -67,7 +69,7 @@ void worldtime_sync() {
         JsonDocument doc;
         DeserializationError error = deserializeJson(doc, payload);
         if (!error) {
-          const char* datetime = doc["datetime"];
+          const char* datetime = doc["date_time"];
           String datetime_str = String(datetime);
           int splitIndex = datetime_str.indexOf('T');
           current_date = datetime_str.substring(0, splitIndex);
